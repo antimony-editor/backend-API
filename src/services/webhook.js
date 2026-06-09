@@ -1,5 +1,5 @@
 class WebhookService {
-    constructor () {
+    constructor() {
         /**
          * The webhook url to send events and logs
          * @type {?string}
@@ -18,7 +18,7 @@ class WebhookService {
      * @param {object} message Message to send
      * @returns {Promise<Response>}
      */
-    async send (message) {
+    async send(message) {
         if (!this.canSend) {
             return;
         }
@@ -26,9 +26,9 @@ class WebhookService {
         const response = await fetch(this.webhookURL, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(message)
+            body: JSON.stringify(message),
         });
 
         return response;

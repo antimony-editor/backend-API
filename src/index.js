@@ -11,11 +11,10 @@ const app = express();
 
 const services = {
     database: databaseService,
-    webhook: webhookService
+    webhook: webhookService,
 };
 
 // Load endpoints into express
-const endpointFolder = path.resolve('./src/endpoints');
 for (const endpoint of globSync('src/endpoints/**/*.js')) {
     const mod = await import(path.resolve(endpoint));
     mod.default(app, services);
