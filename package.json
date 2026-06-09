@@ -1,0 +1,16 @@
+{
+  "name": "backend-api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The backend API for antimony",
+  "scripts": {
+    "start": "node src/index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antimony-editor/backend-API.git"
+  },
+  "license": "MIT",
+  "author": "LordCat0",
+  "type": "module"
+}
