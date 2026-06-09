@@ -1,19 +1,15 @@
 import express from 'express';
-import fs from 'fs';
 import path from 'path';
+import { globSync } from 'tinyglobby';
 
 import 'dotenv/config';
 
 const app = express();
 
 // Load endpoints into express
-const endpointFolder = path.resolve('./src/endpoints/v1');
-for (const endpoint of fs.readdirSync(endpointFolder)) {
-    if (!endpoint.endsWith('.js')) {
-        continue;
-    }
-
-    const mod = await import(path.join(endpointFolder, endpoint));
+const endpointFolder = path.resolve('./src/endpoints');
+for (const endpoint of globSync('src/endpoints/**/*.js')) {
+    const mod = await import(path.resolve(endpoint));
     mod.default(app);
 }
 
