@@ -6,14 +6,20 @@
  */
 export default (app) => {
     app.get('/stock/search', async (req, res) => {
+        // 'type' query is optional and will fallback to 'image'
         if (!req.query.query || !req.query.page) {
             return res.status(400).send('Missing either "query" or "page" query');
         }
 
         const query = encodeURIComponent(req.query.query);
         const page = encodeURIComponent(req.query.page);
+        const type = req.query.type;
 
-        const response = await fetch(`https://api.pexels.com/v1/search?query=${query}&page=${page}`, {
+        const url = type === 'video' ?
+            `https://api.pexels.com/v1/videos/search?query=${query}&page=${page}` :
+            `https://api.pexels.com/v1/search?query=${query}&page=${page}`;
+
+        const response = await fetch(url, {
             headers: {
                 'Authorization': process.env.PEXELS_API_KEY
             }
@@ -27,6 +33,10 @@ export default (app) => {
         }
 
         const json = await response.json();
-        res.json(json.photos);
+        if (type === 'video') {
+            res.json(json.videos);
+        } else {
+            res.json(json.images);
+        }
     });
 };
