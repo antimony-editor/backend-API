@@ -1,8 +1,13 @@
 import { MongoClient } from 'mongodb';
 
-if (!process.env.MONGO_URL) {
-    throw new Error(`Missing env: MONGO_URL`);
+let client;
+
+if (process.env.MONGO_URL) {
+    client = new MongoClient(process.env.MONGO_URL);
+} else {
+    console.warn('Missing "MONGO_URL" env. Running in stateless mode.');
+
+    client = null;
 }
 
-const client = new MongoClient(process.env.MONGO_URL);
 export default client;
