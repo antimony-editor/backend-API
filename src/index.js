@@ -1,39 +1,15 @@
 import 'dotenv/config';
 import path from 'path';
-import crypto from 'crypto';
 import express from 'express';
-import rateLimit from 'express-rate-limit';
 import { globSync } from 'tinyglobby';
+import rateLimit from './util/ratelimit.js';
 
 import databaseService from './services/database.js';
 import webhookService from './services/webhook.js';
 
 const app = express();
 
-app.use(
-    rateLimit({
-        windowMs: 5 * 60 * 1000, // 5 Minutes
-        limit: 5,
-        handler: (req, res) => {
-            const hash = crypto
-                .createHash('sha256')
-                .update(req.ip)
-                .digest('base64');
-
-            webhookService.send({
-                embeds: [
-                    {
-                        title: 'Request ratelimit',
-                        description: `IP hash: ${hash}`,
-                        color: 0xff0000,
-                    },
-                ],
-            });
-
-            res.sendStatus(429);
-        },
-    }),
-);
+app.use(rateLimit);
 
 const services = {
     database: databaseService,
