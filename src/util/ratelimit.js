@@ -4,7 +4,7 @@ import webhookService from '../services/webhook.js';
 
 export default rateLimit({
     windowMs: 5 * 60 * 1000, // 5 Minutes
-    limit: 5,
+    limit: 50,
     handler: (req, res) => {
         const hash = crypto
             .createHash('sha256')
