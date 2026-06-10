@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import path from 'path';
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import { globSync } from 'tinyglobby';
 import rateLimit from './util/ratelimit.js';
 
@@ -9,7 +10,10 @@ import webhookService from './services/webhook.js';
 
 const app = express();
 
-app.use(rateLimit);
+app.use(rateLimit({
+    windowMs: 5 * 60 * 1000, // 5 Minutes
+    limit: 50,
+}));
 
 const services = {
     database: databaseService,
