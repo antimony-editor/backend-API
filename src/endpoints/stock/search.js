@@ -23,6 +23,7 @@ export default (app) => {
                 : `https://api.pexels.com/v1/search?query=${query}&page=${page}`;
 
         const response = await fetch(url, {
+            cache: 'force-cache',
             headers: {
                 Authorization: process.env.PEXELS_API_KEY,
             },
