@@ -17,6 +17,9 @@ importers:
       express-rate-limit:
         specifier: ^8.5.2
         version: 8.5.2(express@5.2.1)
+      http-graceful-shutdown:
+        specifier: ^3.1.16
+        version: 3.1.16
       mongodb:
         specifier: ^7.3.0
         version: 7.3.0
@@ -403,6 +406,10 @@ packages:
   http-errors@2.0.1:
     resolution: {integrity: sha512-4FbRdAX+bSdmo4AUFuS0WNiPz8NgFt+r8ThgNWmlrjQjt1Q7ZR9+zTlce2859x4KSXrwIsaeTqDoKQmtP8pLmQ==}
     engines: {node: '>= 0.8'}
+
+  http-graceful-shutdown@3.1.16:
+    resolution: {integrity: sha512-984h5GmEjnlPR2xW73Z/+r5rguYowKbIYlAN0uqXClo9xjZm+8ZeVN0hMh+0mlw6+H3CThchhZREr0/IHqUO7w==}
+    engines: {node: '>=4.0.0'}
 
   iconv-lite@0.7.2:
     resolution: {integrity: sha512-im9DjEDQ55s9fL4EYzOAv0yMqmMBSZp6G0VvFyTMPKWxiSBHUj9NW/qqLmXUwXrrM7AvqSlTCfvqRb0cM8yYqw==}
@@ -1083,6 +1090,12 @@ snapshots:
       setprototypeof: 1.2.0
       statuses: 2.0.2
       toidentifier: 1.0.1
+
+  http-graceful-shutdown@3.1.16:
+    dependencies:
+      debug: 4.4.3
+    transitivePeerDependencies:
+      - supports-color
 
   iconv-lite@0.7.2:
     dependencies:

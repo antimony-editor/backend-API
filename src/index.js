@@ -2,6 +2,7 @@ import 'dotenv/config';
 import path from 'path';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
+import gracefulShutdown from 'http-graceful-shutdown';
 import { globSync } from 'tinyglobby';
 
 import databaseService from './services/database.js';
@@ -29,3 +30,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log('Listening on port: ' + PORT);
 });
+
+gracefulShutdown(app);
