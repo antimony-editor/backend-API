@@ -3,7 +3,6 @@ import path from 'path';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import { globSync } from 'tinyglobby';
-import rateLimit from './util/ratelimit.js';
 
 import databaseService from './services/database.js';
 import webhookService from './services/webhook.js';
