@@ -2,7 +2,6 @@
  * /stock/search endpoint
  * Forwards a request to pexels API
  * @param {import('express').Express} app Express app
- * @returns {Promise<void>}
  */
 export default (app) => {
     app.get('/stock/search', async (req, res) => {
