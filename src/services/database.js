@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb';
 
+/** @type {MongoClient?} */
 let client;
 
 if (process.env.MONGO_URL) {

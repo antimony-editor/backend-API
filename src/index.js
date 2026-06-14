@@ -20,6 +20,10 @@ const services = {
     webhook: webhookService,
 };
 
+if (databaseService) {
+    await databaseService.connect();
+}
+
 // Load endpoints into express
 for (const endpoint of globSync('src/endpoints/**/*.js')) {
     const mod = await import(path.resolve(endpoint));
