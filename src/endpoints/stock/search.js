@@ -1,47 +1,59 @@
 /**
  * /stock/search endpoint
- * Forwards a request to pexels API
+ * Forwards a request to the Pexels API.
+ *
+ * Query parameters:
+ *   - query (required)
+ *   - page (required)
+ *   - type (optional: "image" | "video", defaults to "image")
+ *
  * @param {import('express').Express} app Express app
  */
 export default (app) => {
     app.get('/stock/search', async (req, res) => {
-        // 'type' query is optional and will fallback to 'image'
-        if (!req.query.query || !req.query.page) {
+        const { query, page, type = 'image' } = req.query;
+
+        if (!query || !page) {
             return res
                 .status(400)
                 .send('Missing either "query" or "page" query');
         }
 
-        const query = encodeURIComponent(req.query.query);
-        const page = encodeURIComponent(req.query.page);
-        const type = req.query.type;
+        const encodedQuery = encodeURIComponent(query);
+        const encodedPage = encodeURIComponent(page);
 
         const url =
             type === 'video'
-                ? `https://api.pexels.com/v1/videos/search?query=${query}&page=${page}`
-                : `https://api.pexels.com/v1/search?query=${query}&page=${page}`;
+                ? `https://api.pexels.com/videos/search?query=${encodedQuery}&page=${encodedPage}`
+                : `https://api.pexels.com/v1/search?query=${encodedQuery}&page=${encodedPage}`;
 
-        const response = await fetch(url, {
-            cache: 'force-cache',
-            headers: {
-                Authorization: process.env.PEXELS_API_KEY,
-            },
-        });
+        try {
+            const response = await fetch(url, {
+                cache: 'force-cache',
+                headers: {
+                    Authorization: process.env.PEXELS_API_KEY,
+                },
+            });
 
-        if (!response.ok) {
-            const text = await response.text();
-            console.warn(
-                `Failed pexels.com/v1/search: ${response.status} ${response.statusText} ${text}`,
-            );
-            res.status(response.status).send(response.statusText);
-            return;
-        }
+            if (!response.ok) {
+                const text = await response.text();
+                console.warn(
+                    `Failed Pexels request: ${response.status} ${response.statusText} ${text}`,
+                );
 
-        const json = await response.json();
-        if (type === 'video') {
-            res.json(json.videos);
-        } else {
-            res.json(json.images);
+                return res.status(response.status).send(response.statusText);
+            }
+
+            const json = await response.json();
+
+            if (type === 'video') {
+                return res.json(json.videos ?? []);
+            }
+
+            return res.json(json.photos ?? []);
+        } catch (err) {
+            console.error('Pexels request failed:', err);
+            return res.status(500).send('Internal server error');
         }
     });
 };
