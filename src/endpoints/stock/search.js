@@ -41,7 +41,7 @@ export default (app) => {
         if (type === 'video') {
             res.json(json.videos);
         } else {
-            res.json(json.images);
+            res.json(json.photos);
         }
     });
 };
